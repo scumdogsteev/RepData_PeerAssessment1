@@ -5,6 +5,7 @@ output:
     keep_md: true
 ---
 
+#### Reproducible Research: Peer Assignment 1
 #### by Steve Myles
 #### May 2015
 
