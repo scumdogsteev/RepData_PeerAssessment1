@@ -22,7 +22,8 @@ the working directory.  First, the code below checks whether the data file
 It then loads the data into a data frame called "data."
 
 
-```{r load}
+
+```r
 if (!file.exists("activity.csv")) {
      unzip("activity.zip")     
      }
@@ -39,7 +40,8 @@ The only preprocessing step undertaken is conversion of the data frame's "date"
 field (which is stored as a factor) to a date.
 
 
-```{r preprocess}
+
+```r
 data$date <- as.Date(as.character(data$date), format="%Y-%m-%d")
 ```
 
@@ -56,7 +58,8 @@ using the  [dplyr](http://cran.rstudio.com/web/packages/dplyr/) package. This
 is loaded (or installed, if necessary) using the pkgInst function that follows.
 
 
-```{r pkgInst}
+
+```r
 ## "pkgInst" is a function that checks whether a set of packages are installed
 ## and, if not, installs them.  x is a set of packages.
 pkgInst <- function(x) {
@@ -73,7 +76,6 @@ pkgInst <- function(x) {
 
 ## run pkgInst for the dplyr package
 pkgInst("dplyr")
-
 ```
 
 
@@ -81,7 +83,8 @@ This allows for the following simple calculation and the creation of the
 histogram.
 
 
-```{r calculation_and_histogram}
+
+```r
 ## calculate the total steps per day ignoring missing values
 totalSteps <- summarize(group_by(data[complete.cases(data),], date),
                         steps = sum(steps))
@@ -89,22 +92,23 @@ totalSteps <- summarize(group_by(data[complete.cases(data),], date),
 ## make a histogram of the total number of steps taken each day
 hist(totalSteps$steps, main = "Histogram of Total Steps per Day", 
      ylab = "Number of Days", xlab = "Total Steps", col = 4, breaks = 20)
-
 ```
+
+![plot of chunk calculation_and_histogram](figure/calculation_and_histogram-1.png) 
 
 
 #### 2. Calculate and report the **mean** and **median** total number of steps taken per day
 
 
-```{r mean_and_median_steps}
+
+```r
 ## calculate the mean and median total number of steps taken per day
 meanSteps <- mean(totalSteps$steps)
 medianSteps <- median(totalSteps$steps)
 ```
 
 
-The mean total number of steps taken per day is **`r format(meanSteps,
-digits = 7)`** and the median is **`r medianSteps`**.  The preceding sentence
+The mean total number of steps taken per day is **10766.19** and the median is **10765**.  The preceding sentence
 used R Markdown to return the values of "meanSteps" and "medianSteps" as
 calculated above.
 
@@ -114,7 +118,8 @@ calculated above.
 #### 1. Make a time series plot (i.e. `type = "l"`) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
 
-```{r average_steps_per_interval}
+
+```r
 ## calculate the average steps per interval across all days using dplyr's 
 ## "summarize function"
 avgStepsperInt <- summarize(group_by(data, interval), 
@@ -127,17 +132,20 @@ plot(x = avgStepsperInt$interval, y = avgStepsperInt$steps, type = "l",
      xlab = "Interval", col = 4)
 ```
 
+![plot of chunk average_steps_per_interval](figure/average_steps_per_interval-1.png) 
+
 
 #### 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
 
-```{r max_interval_steps}
+
+```r
 peakInt <- avgStepsperInt[avgStepsperInt$steps == max(avgStepsperInt$steps), ]
 ```
 
 
 The 5-minute interval containing the maximum number of steps is interval
-**`r peakInt$interval`**.
+**835**.
 
 
 ## Imputing missing values
@@ -147,13 +155,14 @@ The 5-minute interval containing the maximum number of steps is interval
 #### 1. Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with `NA`s)
 
 
-```{r missing_values}
+
+```r
 NArecords <- data[!complete.cases(data), ]
 missingVal <- nrow(NArecords)
 ```
 
 
-There are **`r missingVal`** missing values in the dataset (this sentence
+There are **2304** missing values in the dataset (this sentence
 returns the value of "missingVal" as calculated above).
 
 
@@ -167,7 +176,8 @@ across all days as calculated above (avgStepsperInt).
 #### 3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
 
 
-```{r imput_missing}
+
+```r
 ## using dplyr's "left_join" function, merge the two datasets (joining on
 ## interval)
 dataNew <- left_join(data, avgStepsperInt, by = "interval")
@@ -186,14 +196,14 @@ dataNew$steps.x <- as.integer(dataNew$steps.x)
 
 ## rename the columns (basically, change "steps.x" to "steps")
 names(dataNew) <- c("steps", "date", "interval")
-
 ```
 
 
 #### 4. Make a histogram of the total number of steps taken each day and Calculate and report the **mean** and **median** total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
 
-```{r total_steps_new}
+
+```r
 ## calculate the total steps per day
 totalStepsNew <- summarize(group_by(dataNew, date), steps = sum(steps))
 
@@ -201,15 +211,18 @@ totalStepsNew <- summarize(group_by(dataNew, date), steps = sum(steps))
 hist(totalStepsNew$steps, main = "Histogram of Total Steps per Day with Imputed
      Data", ylab = "Number of Days", xlab = "Total Steps", col=4, 
      breaks = 20)
+```
 
+![plot of chunk total_steps_new](figure/total_steps_new-1.png) 
+
+```r
 ## calculate the mean and median total number of steps taken per day
 meanStepsNew <- mean(totalStepsNew$steps)
 medianStepsNew <- median(totalStepsNew$steps)
 ```
 
 
-The mean total number of steps taken per day is **`r format(meanStepsNew,
-digits = 7)`** and the median is **`r medianStepsNew`**.  (The preceding
+The mean total number of steps taken per day is **10749.77** and the median is **10641**.  (The preceding
 sentence uses R Markdown to return the values of "meanStepsNew" and 
 "medianStepsNew" as calculated above.)
 
@@ -223,7 +236,8 @@ are lower in the case of the dataset with imputed data.
 #### 1. Create a new factor variable in the dataset with two levels -- "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 
 
-```{r weekday_weekend}
+
+```r
 ## add a column called "wdaywend" to dataNew indicating whether each date is a
 ## weekend (Saturday or Sunday) or a weekday (any other date)
 dataNew <- within(dataNew, wdaywend <- ifelse((weekdays(date) == "Saturday" | 
@@ -232,14 +246,14 @@ dataNew <- within(dataNew, wdaywend <- ifelse((weekdays(date) == "Saturday" |
 
 ## convert the wdaywend column to factor
 dataNew$wdaywend <- as.factor(dataNew$wdaywend)
-
 ```
 
 
 #### 2. Make a panel plot containing a time series plot (i.e. `type = "l"`) of the 5-minute interval (x-axis) and the average number of steps taken, averaged  across all weekday days or weekend days (y-axis).
 
 
-```{r panel_plot}
+
+```r
 ## calculate the average steps per interval across all weekend days or weekday
 ## days
 avgStepsperIntNew <- summarize(group_by(dataNew, interval, wdaywend), 
@@ -255,3 +269,5 @@ pkgInst("lattice")
 xyplot(steps ~ interval | wdaywend, data = avgStepsperIntNew, layout = c(1,2),
        type="l", xlab = "Interval", ylab = "Number of steps")
 ```
+
+![plot of chunk panel_plot](figure/panel_plot-1.png) 
