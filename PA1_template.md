@@ -19,7 +19,7 @@ output:
 
 I am assuming that either the data file (or the zipped version of it) is in 
 the working directory.  First, the code below checks whether the data file
-("activity.csv") exists.  If not, it unzips the zipped version of the file.  
+("activity.csv") exists.  If not, it unzips the zipped version of the file. 
 It then loads the data into a data frame called "data."
 
 
@@ -86,7 +86,8 @@ histogram.
 
 
 ```r
-## calculate the total steps per day ignoring missing values
+## calculate the total steps per day ignoring missing values using dplyr's
+## "summarize" function
 totalSteps <- summarize(group_by(data[complete.cases(data),], date),
                         steps = sum(steps))
 
@@ -109,9 +110,9 @@ medianSteps <- median(totalSteps$steps)
 ```
 
 
-The mean total number of steps taken per day is **10766.19** and the median is **10765**.  The preceding sentence
-used R Markdown to return the values of "meanSteps" and "medianSteps" as
-calculated above.
+The mean total number of steps taken per day is **10766.19** and the median is **10765**.  (The preceding sentence
+uses R Markdown to return the values of "meanSteps" and "medianSteps" as
+calculated above.)
 
 
 ## What is the average daily activity pattern?
@@ -121,8 +122,7 @@ calculated above.
 
 
 ```r
-## calculate the average steps per interval across all days using dplyr's 
-## "summarize function"
+## calculate the average steps per interval across all days
 avgStepsperInt <- summarize(group_by(data, interval), 
                             steps = mean(steps, na.rm=TRUE))
 
@@ -146,7 +146,8 @@ peakInt <- avgStepsperInt[avgStepsperInt$steps == max(avgStepsperInt$steps), ]
 
 
 The 5-minute interval containing the maximum number of steps is interval
-**835**.
+**835**.  (The preceding sentence uses R Markdown to display
+the value of peakInt$interval, calculated above.)
 
 
 ## Imputing missing values
@@ -163,8 +164,8 @@ missingVal <- nrow(NArecords)
 ```
 
 
-There are **2304** missing values in the dataset (this sentence
-returns the value of "missingVal" as calculated above).
+There are **2304** missing values in the dataset. (The preceding
+sentence returns the value of "missingVal" as calculated above).
 
 
 #### 2. Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
