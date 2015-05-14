@@ -84,7 +84,8 @@ histogram.
 
 ```{r calculation_and_histogram}
 ## calculate the total steps per day ignoring missing values using dplyr's
-## "summarize" function
+## "summarize" function and ignoring missing values per the note in the
+## assignment.
 totalSteps <- summarize(group_by(data[complete.cases(data),], date),
                         steps = sum(steps))
 
