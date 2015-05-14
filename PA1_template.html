@@ -201,7 +201,7 @@ hr {
 </head>
 
 <body>
-<h4>Reproducible Research: Peer Assignment 1</h4>
+<h1>Reproducible Research: Peer Assignment 1</h1>
 
 <h4>by Steve Myles</h4>
 
@@ -213,8 +213,10 @@ hr {
 
 <h4>1. Load the data (i.e. <code>read.csv()</code>)</h4>
 
-<p>I am assuming that either the data file (or the zipped version of it) is in 
-the working directory.  First, the code below checks whether the data file
+<p>I am assuming that either the data file or the zipped version of it is in 
+the working directory.  If it is not there, it must be downloaded.</p>
+
+<p>First, the code below checks whether the data file
 (&ldquo;activity.csv&rdquo;) exists.  If not, it unzips the zipped version of the file. 
 It then loads the data into a data frame called &ldquo;data.&rdquo;</p>
 
@@ -240,7 +242,7 @@ field (which is stored as a factor) to a date.</p>
 
 <h4>1. Make a histogram of the total number of steps taken each day</h4>
 
-<p>I have chosen to facilitate some of the calculations in this assignmnet by 
+<p>I have chosen to facilitate some of the calculations in this assignment by 
 using the  <a href="http://cran.rstudio.com/web/packages/dplyr/">dplyr</a> package. This
 is loaded (or installed, if necessary) using the pkgInst function that follows.</p>
 
@@ -267,7 +269,7 @@ histogram.</p>
 
 <pre><code class="r">## calculate the total steps per day ignoring missing values using dplyr&#39;s
 ## &quot;summarize&quot; function and ignoring missing values per the note in the
-## assignment.
+## assignment. complete.cases is used to ignore the NAs.
 totalSteps &lt;- summarize(group_by(data[complete.cases(data),], date),
                         steps = sum(steps))
 
@@ -321,7 +323,11 @@ the value of peakInt$interval, calculated above.)</p>
 
 <h4>1. Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with <code>NA</code>s)</h4>
 
-<pre><code class="r">NArecords &lt;- data[!complete.cases(data), ]
+<pre><code class="r">## count the missing values using !complete.cases (number of incomplete
+## cases) and create a new data frame called NArecords
+NArecords &lt;- data[!complete.cases(data), ]
+
+## number of rows in the NArecords data frame is the number of NA records
 missingVal &lt;- nrow(NArecords)
 </code></pre>
 

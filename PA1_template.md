@@ -5,7 +5,7 @@ output:
     keep_md: true
 ---
 
-#### Reproducible Research: Peer Assignment 1
+# Reproducible Research: Peer Assignment 1
 #### by Steve Myles
 #### May 2015
 
@@ -17,8 +17,10 @@ output:
 #### 1. Load the data (i.e. `read.csv()`)
 
 
-I am assuming that either the data file (or the zipped version of it) is in 
-the working directory.  First, the code below checks whether the data file
+I am assuming that either the data file or the zipped version of it is in 
+the working directory.  If it is not there, it must be downloaded.
+
+First, the code below checks whether the data file
 ("activity.csv") exists.  If not, it unzips the zipped version of the file. 
 It then loads the data into a data frame called "data."
 
@@ -54,7 +56,7 @@ data$date <- as.Date(as.character(data$date), format="%Y-%m-%d")
 #### 1. Make a histogram of the total number of steps taken each day
 
 
-I have chosen to facilitate some of the calculations in this assignmnet by 
+I have chosen to facilitate some of the calculations in this assignment by 
 using the  [dplyr](http://cran.rstudio.com/web/packages/dplyr/) package. This
 is loaded (or installed, if necessary) using the pkgInst function that follows.
 
@@ -88,7 +90,7 @@ histogram.
 ```r
 ## calculate the total steps per day ignoring missing values using dplyr's
 ## "summarize" function and ignoring missing values per the note in the
-## assignment.
+## assignment. complete.cases is used to ignore the NAs.
 totalSteps <- summarize(group_by(data[complete.cases(data),], date),
                         steps = sum(steps))
 
@@ -160,7 +162,11 @@ the value of peakInt$interval, calculated above.)
 
 
 ```r
+## count the missing values using !complete.cases (number of incomplete
+## cases) and create a new data frame called NArecords
 NArecords <- data[!complete.cases(data), ]
+
+## number of rows in the NArecords data frame is the number of NA records
 missingVal <- nrow(NArecords)
 ```
 
