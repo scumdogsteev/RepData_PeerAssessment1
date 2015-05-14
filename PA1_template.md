@@ -79,20 +79,6 @@ pkgInst <- function(x) {
 pkgInst("dplyr")
 ```
 
-```
-## Loading required package: dplyr
-## 
-## Attaching package: 'dplyr'
-## 
-## The following object is masked from 'package:stats':
-## 
-##     filter
-## 
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
 
 This allows for the following simple calculation and the creation of the
 histogram.
@@ -101,7 +87,8 @@ histogram.
 
 ```r
 ## calculate the total steps per day ignoring missing values using dplyr's
-## "summarize" function
+## "summarize" function and ignoring missing values per the note in the
+## assignment.
 totalSteps <- summarize(group_by(data[complete.cases(data),], date),
                         steps = sum(steps))
 
@@ -278,13 +265,7 @@ avgStepsperIntNew <- summarize(group_by(dataNew, interval, wdaywend),
 ## run the pkgInst (see above) to load (and install, if necessary) the lattice
 ## package
 pkgInst("lattice")
-```
 
-```
-## Loading required package: lattice
-```
-
-```r
 ## create the time series plot with the interval on the x-axis, the number of 
 ## steps on the y-axis, and the two panels being set to the values of wdaywend
 ## (Weekend and weekday). set the labels.

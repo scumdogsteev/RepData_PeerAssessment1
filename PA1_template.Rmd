@@ -52,7 +52,7 @@ data$date <- as.Date(as.character(data$date), format="%Y-%m-%d")
 #### 1. Make a histogram of the total number of steps taken each day
 
 
-I have chosen to facilitate some of the calculations in this assignmnet by 
+I have chosen to facilitate some of the calculations in this assignment by 
 using the  [dplyr](http://cran.rstudio.com/web/packages/dplyr/) package. This
 is loaded (or installed, if necessary) using the pkgInst function that follows.
 
@@ -85,7 +85,7 @@ histogram.
 ```{r calculation_and_histogram}
 ## calculate the total steps per day ignoring missing values using dplyr's
 ## "summarize" function and ignoring missing values per the note in the
-## assignment.
+## assignment. complete.cases is used to ignore the NAs.
 totalSteps <- summarize(group_by(data[complete.cases(data),], date),
                         steps = sum(steps))
 
